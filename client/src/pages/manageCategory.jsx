@@ -103,7 +103,7 @@ const ManageCategory = () => {
         ):null
       }
       <div className="w-full h-full flex flex-row items-center justify-center">
-        <div className="w-310 h-180 bg-slate-800 rounded-lg shadow-lg flex flex-col items-baseline justify-around gap-5 p-10 overflow-y-auto">
+        <div className="w-310 h-180 bg-slate-800 font-poppins rounded-lg shadow-lg flex flex-col items-baseline justify-around gap-5 p-10 overflow-y-auto">
           <h1 className='text-3xl font-bold text-white'>Categories:</h1>
           {
             categories.length>0?(
@@ -118,9 +118,9 @@ const ManageCategory = () => {
           }
         </div>
         <div className="w-100 h-180 bg-violet-800 rounded-lg shadow-lg flex flex-col items-baseline justify-evenly gap-5 p-10 ml-10">
-          <h1 className="text-3xl text-white font-extrabold">Add Category</h1>
+          <h1 className="text-3xl text-white font-extrabold font-poppins">Add Category</h1>
           <form
-            className="flex flex-col items-baseline justify-baseline gap-5 w-full h-full"
+            className="flex flex-col items-baseline justify-baseline gap-5 w-full h-full font-poppins"
             onSubmit={addCategory}
           >
             <label className="text-lg text-white">Category Name</label>

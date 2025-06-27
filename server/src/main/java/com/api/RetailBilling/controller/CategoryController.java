@@ -31,4 +31,7 @@ public class CategoryController {
     public List<Category> getCategoryList(){
         return categoryService.getCategoryList();
     }
+    @GetMapping("/categories/names")
+    public List<Object[]> getCategoryNames(){return categoryService.getCategoryNames();}
+
 }

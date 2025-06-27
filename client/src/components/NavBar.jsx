@@ -18,7 +18,7 @@ function NavBar() {
         <div className='flex flex-row items-center gap-5'>
             <p className='cursor-pointer'><Link to="/dashboard">DASHBOARD</Link></p>
             <p className='cursor-pointer'><Link to="/manageCategory">MANAGE CATEGORIES</Link></p>
-            <p className='cursor-pointer'>MANAGE PRODUCTS</p>
+            <p className='cursor-pointer'><Link to='/manageProducts'>MANAGE PRODUCTS</Link></p>
             <p className='cursor-pointer'>MANAGE ADMIN</p>
         </div>
         <div className='rounded-full bg-white w-10 h-10 flex items-center justify-center cursor-pointer' onClick={updateVisisblity}>
@@ -29,7 +29,7 @@ function NavBar() {
                     <button onClick={
                         ()=>{
                             localStorage.removeItem("Token");
-                            navigate("/auth/login");
+                            navigate("/");
                         }
                     } className='bg-violet-700 text-white w-30 h-10 p-2 rounded-lg cursor-pointer'>Logout</button>
                 </div>
