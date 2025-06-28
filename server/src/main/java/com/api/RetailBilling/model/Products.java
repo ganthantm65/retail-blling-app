@@ -19,6 +19,9 @@ public class Products {
 
     private String description;
 
+    @Column(nullable = false)
+    private int stock=0;
+
     private double price;
 
     private String imageUrl;

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import NavBar from '../components/NavBar';
 import MessageBox from '../components/MessageBox';
 import BannerCard from '../components/BannerCard';
+import JwtValidator from '../components/JwtValidator';
 
 const ManageCategory = () => {
   const [categoryName, setCategoryName] = useState('');
@@ -21,8 +22,6 @@ const ManageCategory = () => {
 
   useEffect(() => {
     const fetchCategories = async () => {
-      console.log(localStorage.getItem("Token"));
-      
       const url = `http://localhost:8080/api/categories`;
       const options = {
         method: "GET",
@@ -46,10 +45,6 @@ const ManageCategory = () => {
 
     fetchCategories();
   }, []);
-  useEffect(()=>{
-    console.log("Categories:", categories);
-    
-  },[categories])
   const addCategory = async (e) => {
     e.preventDefault(); 
 
@@ -93,7 +88,12 @@ const ManageCategory = () => {
     }
   };
 
-
+  useEffect(()=>{
+    if(JwtValidator(localStorage.getItem("Token"))){
+      localStorage.clear();
+      window.location.href='/';
+    }
+  },[])
   return (
     <div className="w-screen h-screen bg-slate-900 relative overflow-hidden flex flex-col items-center justify-between font-family-poppins">
       <NavBar />
