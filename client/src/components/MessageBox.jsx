@@ -7,7 +7,7 @@ const MessageBox = ({ message, color  }) => {
 
   return (
     <div
-      className={`fixed top-0 left-1/2 transform -translate-x-1/2 px-6 py-3 rounded-lg shadow-lg flex items-center justify-between text-white font-semibold text-lg ${color}`}
+      className={`fixed z-50 top-5 left-1/2 transform -translate-x-1/2 px-6 py-3 rounded-lg shadow-lg flex items-center justify-between text-white font-semibold text-lg ${color}`}
       role="alert"
     >
       <span>{message}</span>

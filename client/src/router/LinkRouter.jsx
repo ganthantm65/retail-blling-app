@@ -9,7 +9,7 @@ function LinkRouter() {
   return (
     <BrowserRouter>
         <Routes>
-            <Route path='/' element={<Login/>}/>
+            <Route path='/auth/login' element={<Login/>}/>
             <Route path='/dashboard' element={<Dashboard/>}/>
             <Route path='/manageCategory' element={<ManageCategory/>}/>
             <Route path='/manageProducts' element={<ManageProducts/>}/>'

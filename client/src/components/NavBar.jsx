@@ -14,7 +14,7 @@ function NavBar() {
     }
     const navigate=useNavigate();
   return (
-    <div className='w-full h-16 bg-slate-800 flex flex-row items-center justify-between shadow-lg font-poppins text-white px-10'>
+    <div className='position-fixed w-full h-16 bg-slate-800 flex flex-row items-center justify-between shadow-lg font-poppins text-white px-10'>
         <h1 className='text-3xl font-extrabold'>Retail Billing</h1>
         <div className='flex flex-row items-center gap-5'>
             <p className='cursor-pointer'><Link to="/dashboard">DASHBOARD</Link></p>

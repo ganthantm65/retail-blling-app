@@ -1,6 +1,7 @@
 package com.api.RetailBilling.controller;
 
 import com.api.RetailBilling.model.Products;
+import com.api.RetailBilling.model.ProductsDTO;
 import com.api.RetailBilling.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -17,6 +18,10 @@ public class ProductController {
     @PostMapping("/addProducts")
     public Products addProducts(@RequestBody Products products){
         return productService.addProducts(products);
+    }
+    @GetMapping("/getProducts")
+    public List<ProductsDTO> getAllProducts(){
+        return productService.getAllProducts();
     }
     @GetMapping("/getCategory/{categoryName}")
     public List<Products> getProducts(@PathVariable String categoryName){

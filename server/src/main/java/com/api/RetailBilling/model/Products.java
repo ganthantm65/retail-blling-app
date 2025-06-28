@@ -20,7 +20,7 @@ public class Products {
     private String description;
 
     @Column(nullable = false)
-    private int stock=0;
+    private int stock;
 
     private double price;
 

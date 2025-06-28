@@ -103,8 +103,7 @@ const ManageCategory = () => {
         ):null
       }
       <div className="w-full h-full flex flex-row items-center justify-center">
-        <div className="w-310 h-180 bg-slate-800 font-poppins rounded-lg shadow-lg flex flex-col items-baseline justify-around gap-5 p-10 overflow-y-auto">
-          <h1 className='text-3xl font-bold text-white'>Categories:</h1>
+        <div className="w-310 h-180 bg-slate-800 font-poppins rounded-lg shadow-lg flex flex-row flex-wrap items-baseline justify-around gap-5 p-10 overflow-y-auto">
           {
             categories.length>0?(
               categories.map((category,index)=>{
