@@ -1,5 +1,5 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faUser } from '@fortawesome/free-solid-svg-icons'
+import { faCartShopping, faUser } from '@fortawesome/free-solid-svg-icons'
 import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 
@@ -14,7 +14,7 @@ function NavBar() {
     }
     const navigate=useNavigate();
   return (
-    <div className='position-fixed w-full h-16 bg-slate-800 flex flex-row items-center justify-between shadow-lg font-poppins text-white px-10'>
+    <nav className='position-fixed w-full h-16 bg-slate-800 flex flex-row items-center justify-between shadow-lg font-poppins text-white px-10'>
         <h1 className='text-3xl font-extrabold'>Retail Billing</h1>
         <div className='flex flex-row items-center gap-5'>
             <p className='cursor-pointer'><Link to="/dashboard">DASHBOARD</Link></p>
@@ -22,6 +22,11 @@ function NavBar() {
             <p className='cursor-pointer'><Link to='/manageProducts'>MANAGE PRODUCTS</Link></p>
             <p className='cursor-pointer'>MANAGE ADMIN</p>
         </div>
+        <button onClick={()=>{
+            navigate("/cart")
+        }} className='w-30 h-10 rounded-lg shadow-lg bg-violet-700 cursor-pointer'>
+            Cart Items <FontAwesomeIcon icon={faCartShopping}/>
+        </button>
         <div className='rounded-full bg-white w-10 h-10 flex items-center justify-center cursor-pointer' onClick={updateVisisblity}>
             <FontAwesomeIcon icon={faUser} className='text-zinc-500'/>
             {visible ? (
@@ -38,7 +43,7 @@ function NavBar() {
             }
 
         </div>
-    </div>
+    </nav>
   )
 }
 

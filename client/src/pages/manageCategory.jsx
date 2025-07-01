@@ -11,7 +11,6 @@ const ManageCategory = () => {
   const [color, setColor] = useState('');
   const [imageUrl, setImageUrl] = useState('');
   const [categories,setCategories]=useState([]);
-
   const updateCategoryName = (e) => {
     setCategoryName(e.target.value);
   };

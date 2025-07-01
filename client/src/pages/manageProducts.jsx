@@ -19,6 +19,12 @@ const ManageProducts = () => {
   const [message,setMessage]=useState("");
   const [productList,setProductList]=useState([]);
   const [imageUrl,setImageUrl]=useState();
+  const [searchValue,setSearchValue]=useState('');
+
+  localStorage.setItem("Products",JSON.stringify(productList))
+
+  const products=JSON.parse(localStorage.getItem("Products")|| "[]");
+
   const updateProductName=(e)=>{
     setProductName(e.target.value);
   }
@@ -33,6 +39,9 @@ const ManageProducts = () => {
   }
   const updateImageUrl=(e)=>{
     setImageUrl(e.target.value)
+  }
+  const updateSearchValue=(e)=>{
+    setSearchValue(e.target.value)
   }
   const updateVisisblity=()=>{
     setVisiblity(!visiblity);
@@ -68,6 +77,8 @@ const ManageProducts = () => {
       if(!response.ok){
         throw new Error("Error in adding product!");
       }
+      const data=await response.json();
+      setProductList(prev => [...prev, data]);
       setShowMessage(true);
       setMessage("Category added successfully!");
       setColor('bg-green-600')
@@ -77,49 +88,48 @@ const ManageProducts = () => {
       setProductName("");
       setProductPrice("");
       setStock("");
+
     } catch (error) {
       setShowMessage(true);
       setMessage(error.message);
       setColor("bg-red-500");      
     }
   }
-  useEffect(()=>{
-    const fetchCategories=async()=>{
-      const url=`http://localhost:8080/api/categories/names`
-      const options={
-        method:"GET",
-        headers:{
-          Authorization:`Bearer ${localStorage.getItem('Token')}`,
-          "Content-Type":"application/json"
-        }
-      }
-      console.log(options);
-      
-      try {
-        const response=await fetch(url,options);
-
-        if (!response.ok) {
-          throw new Error("Error in fetching categories!")
-        }
-        
-        const data=await response.json()
-        setCategories(data);
-        
-      } catch (error) {
-        console.log(error)
+  const searchProducts=async()=>{
+    const searchValueLower=searchValue.trim().toLowerCase();
+    const categoryNames=categories.map(category => category[1].trim().toLowerCase())
+    const isIncluded=categoryNames.includes(searchValueLower);
+    const encodedValue = encodeURIComponent(searchValueLower);
+    
+    const url=isIncluded?`http://localhost:8080/api/getCategory/${encodedValue}`:`http://localhost:8080/api/getProducts/${encodedValue}`;
+    console.log(url);
+    
+    const options={
+      method:"GET",
+      headers:{
+        Authorization:`Bearer ${localStorage.getItem('Token')}`,
+        "Content-Type":"application/json"
       }
     }
-    fetchCategories();
-  },[])
-  
-  useEffect(()=>{
-    if(JwtValidator(localStorage.getItem("Token"))){
-      localStorage.clear();
-      window.location.href='/';
+    try{
+      const response=await fetch(url,options);
+      if(!response.ok){
+        throw new Error("Error in fetching products!");
+      }
+      const data=await response.json();
+      if(data.length === 0){
+        setShowMessage(true);
+        setMessage("No products found!");
+        setColor("bg-red-500");
+      }
+      setProductList(data)      
+    }catch(error){
+      setShowMessage(true);
+      setMessage(error.message);
+      setColor("bg-red-500");
     }
-  },[])
-  useEffect(()=>{
-    const fetchProducts=async()=>{
+  }
+  const fetchProducts=async()=>{
       const url=`http://localhost:8080/api/getProducts`;
       const options={
         method:"GET",
@@ -141,8 +151,56 @@ const ManageProducts = () => {
         setColor("bg-red-500");
       }
     }
+
+  
+
+  useEffect(()=>{
+    const fetchCategories=async()=>{
+      const url=`http://localhost:8080/api/categories/names`
+      const options={
+        method:"GET",
+        headers:{
+          Authorization:`Bearer ${localStorage.getItem('Token')}`,
+          "Content-Type":"application/json"
+        }
+      }
+      
+      try {
+        const response=await fetch(url,options);
+
+        if (!response.ok) {
+          throw new Error("Error in fetching categories!")
+        }
+        
+        const data=await response.json()
+        setCategories(data);
+        
+      } catch (error) {
+        console.log(error)
+      }
+    }
+    fetchCategories();
+  },[])
+  
+  useEffect(()=>{
+    if (searchValue!="") {
+      searchProducts();
+    }else{
+      fetchProducts();
+    }
+  },[searchValue])
+
+  useEffect(()=>{
+    if(JwtValidator(localStorage.getItem("Token"))){
+      localStorage.clear();
+      window.location.href='/';
+    }
+  },[])
+
+  useEffect(()=>{
     fetchProducts();
   },[])
+
   return (
         <div className='w-screen h-screen bg-slate-900 relative overflow-hidden flex flex-col items-center justify-between'>
             <NavBar />
@@ -150,15 +208,17 @@ const ManageProducts = () => {
               <MessageBox message={message} color={color} />
             ) : null}
 
-            <div className='w-full h-180 flex flex-col items-center justify-start font-poppins bg-slate-800 text-white rounded-lg shadow-lg p-5 my-2'>
-              <div className='w-full flex flex-col lg:flex-row items-center justify-between gap-4 mb-4 '>
+            <div className='w-full h-180 flex flex-col items-center justify-center font-poppins bg-slate-800 text-white rounded-lg shadow-lg p-5 my-2'>
+              <div className='w-385 flex flex-col lg:flex-row items-center justify-between mb-4 '>
                 <div className='flex flex-row items-center justify-center w-full lg:w-auto'>
                   <input
                     type='text'
+                    value={searchValue}
                     placeholder='Search products'
+                    onChange={updateSearchValue}
                     className='bg-white rounded-s-xl shadow-lg text-black h-10 p-2 w-full lg:w-72'
                   />
-                  <button className='bg-violet-600 rounded-s-none rounded-e-xl shadow-lg h-10 p-2'>
+                  <button onClick={searchProducts} className='bg-violet-600 rounded-s-none rounded-e-xl shadow-lg h-10 p-2'>
                     <FontAwesomeIcon
                       icon={faSearch}
                     />
@@ -172,9 +232,9 @@ const ManageProducts = () => {
                 </button>
               </div>
 
-              <div className='flex flex-row flex-wrap items-start justify-evenly gap-5 w-full h-full max-h-[80vh] overflow-y-auto'>
-                {productList.length > 0 ? (
-                  productList.map((product, index) => (
+              <div className='flex flex-row flex-wrap items-baseline justify-evenly gap-5 w-full h-full max-h-[80vh] overflow-y-auto'>
+                {products.length > 0 ? (
+                  products.map((product, index) => (
                     <ProductCard product={product} index={index} />
                   ))
                 ) : (

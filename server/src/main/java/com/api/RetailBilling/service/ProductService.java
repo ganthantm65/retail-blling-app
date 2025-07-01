@@ -30,6 +30,10 @@ public class ProductService {
         return productRepository.save(products);
     }
 
+    public void deleteProduct(Products products){
+        productRepository.deleteById(products.getProduct_id());
+    }
+
     public List<Products> getProductsByCategory(String categoryName) {
         return productRepository.findByCategoryName(categoryName);
     }
