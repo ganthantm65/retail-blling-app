@@ -12,14 +12,19 @@ public class PurchasedItem {
     private int item_no;
 
     @ManyToOne
-    @JoinColumn(name = "purchase_no")
+    @JoinColumn(name = "purchase_no", nullable = false)
     private Purchase purchase;
 
     @ManyToOne
-    @JoinColumn(name = "product_id")
+    @JoinColumn(name = "product_id", nullable = false)
     private Products products;
 
+    @Column(nullable = false)
     private int quantity;
 
+    @Column(nullable = false)
     private double unit_price;
+
+    @Column(nullable = false)
+    private double subtotal;
 }
