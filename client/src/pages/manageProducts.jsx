@@ -152,8 +152,6 @@ const ManageProducts = () => {
       }
     }
 
-  
-
   useEffect(()=>{
     const fetchCategories=async()=>{
       const url=`http://localhost:8080/api/categories/names`
@@ -193,7 +191,7 @@ const ManageProducts = () => {
   useEffect(()=>{
     if(JwtValidator(localStorage.getItem("Token"))){
       localStorage.clear();
-      window.location.href='/';
+      window.location.href='/auth/login';
     }
   },[])
 

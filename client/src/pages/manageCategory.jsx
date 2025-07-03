@@ -90,7 +90,7 @@ const ManageCategory = () => {
   useEffect(()=>{
     if(JwtValidator(localStorage.getItem("Token"))){
       localStorage.clear();
-      window.location.href='/';
+      window.location.href='/auth/login';
     }
   },[])
   return (

@@ -1,18 +1,12 @@
 package com.api.RetailBilling.controller;
 
-import com.api.RetailBilling.model.BillDTO;
-import com.api.RetailBilling.model.Customer;
-import com.api.RetailBilling.model.Purchase;
-import com.api.RetailBilling.model.PurchasedItem;
+import com.api.RetailBilling.model.*;
 import com.api.RetailBilling.service.CustomerService;
 import com.api.RetailBilling.service.PurchaseService;
 import com.api.RetailBilling.service.PurchasedItemsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.List;
@@ -50,5 +44,15 @@ public class BillController {
             System.out.println(e);
             return ResponseEntity.status(400).body(response.put("message", e.getMessage()));
         }
+    }
+
+    @GetMapping("/getPurchases")
+    public List<PurchaseDTO> getPurchase(){
+        return purchaseService.getPurchases();
+    }
+
+    @GetMapping("/getPurchasedItems")
+    public List<PurchasedItemsDTO> getPurchasedItems(){
+        return purchasedItemsService.getPurchasedItems();
     }
 }

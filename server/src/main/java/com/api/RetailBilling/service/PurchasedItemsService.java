@@ -1,6 +1,7 @@
 package com.api.RetailBilling.service;
 
 import com.api.RetailBilling.model.PurchasedItem;
+import com.api.RetailBilling.model.PurchasedItemsDTO;
 import com.api.RetailBilling.repository.PurchasedItemRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,5 +17,9 @@ public class PurchasedItemsService {
 
     public void addPurchasedItems(List<PurchasedItem> purchasedItems){
         purchasedItemRepo.saveAll(purchasedItems);
+    }
+
+    public List<PurchasedItemsDTO> getPurchasedItems(){
+        return purchasedItemRepo.fetchPurchaseDetailsWithItems();
     }
 }

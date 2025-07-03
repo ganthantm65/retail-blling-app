@@ -1,6 +1,6 @@
 import { faCartPlus, faTrash } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import MessageBox from '../components/MessageBox';
 
@@ -9,6 +9,35 @@ function ProductCard({ product, index }) {
   const [showMessage,setShowMessage]=useState(false);
   const [message,setMessage]=useState();
   const [color,setColor]=useState();
+
+  const [cartItems, setCartItems] = useState(() => {
+    const saved = localStorage.getItem("CartItems");
+    return saved ? JSON.parse(saved) : [];
+  });
+
+  useEffect(() => {
+    localStorage.setItem("CartItems", JSON.stringify(cartItems));
+  }, [cartItems]);
+
+  const [quantity, setQuantity] = useState(1);
+
+  const updateQuantity = (event) => {
+    setQuantity(event.target.value);
+  };
+
+  const addTOCart = (product, quantity) => {
+    const updatedProd = {
+      product_id: product.product_id,
+      product_name: product.product_name,
+      price: product.price,
+      imageUrl: product.imageUrl,
+      quantity: quantity || 1,
+    };
+    setCartItems([...cartItems, updatedProd]);
+    setShowMessage(true)
+    setMessage("Added to cart")
+    setColor("bg-green-500")
+  };
 
 
   const deleteProducts = async (data) => {
@@ -48,9 +77,13 @@ function ProductCard({ product, index }) {
   return (
     <div 
     index={index} 
+    key={index}
     onClick={(e)=>{
       const tag = e.target.tagName.toLowerCase();
-      if (tag !== 'button' && !e.target.closest('button')) {
+      if (
+        !(tag === 'button' || e.target.closest('button') ||
+          tag === 'input' || e.target.closest('input'))
+      ) {
         navigate("/product", { state: { product } });
       }
     }}
@@ -61,13 +94,16 @@ function ProductCard({ product, index }) {
       <div className='flex flex-col items-center justify-between gap-2 w-full'>
         <h2 className='text-xl font-semibold text-center truncate w-full'>{product?.product_name}</h2>
         <p className='text-lg text-center'>Price: ₹{product?.price}</p>
+        <input onChange={updateQuantity} type="number" placeholder='quantity' className='bg-slate-800 rounded-lg shadow-lg text-white font-poppins w-40 text-center'/>
         <div className='w-full flex flex-row items-center justify-around mt-2'>
-          <button className='bg-slate-700 w-20 rounded-xl shadow-md p-2 text-white cursor-pointer hover:bg-slate-600 active:scale-95 transition'>
+          <button 
+          onClick={()=>addTOCart(product,quantity)}
+          className='bg-slate-700 w-20 rounded-xl shadow-md p-2 text-white cursor-pointer hover:bg-slate-600 active:scale-95 transition'>
             <FontAwesomeIcon icon={faCartPlus} />
           </button>
           <button onClick={(e) => {
             e.stopPropagation();
-            deleteProducts(product);
+            deleteProducts(product,quantity);
           }} className='bg-white w-20 cursor-pointer rounded-xl shadow-md p-2 text-violet-600 hover:bg-gray-200 active:scale-95 transition'>
             <FontAwesomeIcon icon={faTrash} />
           </button>

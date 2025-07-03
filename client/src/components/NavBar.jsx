@@ -20,7 +20,7 @@ function NavBar() {
             <p className='cursor-pointer'><Link to="/dashboard">DASHBOARD</Link></p>
             <p className='cursor-pointer'><Link to="/manageCategory">MANAGE CATEGORIES</Link></p>
             <p className='cursor-pointer'><Link to='/manageProducts'>MANAGE PRODUCTS</Link></p>
-            <p className='cursor-pointer'>MANAGE ADMIN</p>
+            <p className='cursor-pointer'><Link to='/history'>HISTORY</Link></p>
         </div>
         <button onClick={()=>{
             navigate("/cart")
@@ -34,8 +34,8 @@ function NavBar() {
                     <p className=' text-lg font-semibold'>{userName}</p>'
                     <button onClick={
                         ()=>{
-                            localStorage.removeItem("Token");
-                            navigate("/");
+                            localStorage.clear();
+                            navigate("/auth/login");
                         }
                     } className='bg-violet-700 text-white w-30 h-10 p-2 rounded-lg cursor-pointer'>Logout</button>
                 </div>
