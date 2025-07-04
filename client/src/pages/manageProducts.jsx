@@ -80,7 +80,7 @@ const ManageProducts = () => {
       const data=await response.json();
       setProductList(prev => [...prev, data]);
       setShowMessage(true);
-      setMessage("Category added successfully!");
+      setMessage("Product added successfully!");
       setColor('bg-green-600')
       setCategory("");
       setDescription("");

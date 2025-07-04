@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import NavBar from '../components/NavBar'
+import JwtValidator from '../components/JwtValidator';
 
 function Dashboard() {
   const [purchase,setPurchase]=useState([])
@@ -32,13 +33,19 @@ function Dashboard() {
   useEffect(()=>{
     getPurchase()
   },[])
+   useEffect(()=>{
+   if(JwtValidator(localStorage.getItem("Token"))){
+      localStorage.clear();
+      window.location.href='/auth/login';
+    }
+  },[])
   return (
     <div className='w-screen h-screen bg-slate-900 relative overflow-hidden flex flex-col items-center justify-between'>
       <NavBar/>
       <div className='w-410 h-70 flex flex-row items-center justify-between'>
         <div className='w-200 h-full rounded-lg shadow-lg bg-gradient-to-r from-cyan-500 to-violet-700 flex flex-col items-center justify-center gap-2'>
           <h3 className='text-white font-poppins text-2xl'>Total Sales Amount</h3>
-          <h2 className='text-white font-poppins text-5xl'>{saleAmount}</h2>
+          <h2 className='text-white font-poppins text-5xl'>₹ {saleAmount}</h2>
         </div>
         <div className='w-200 h-full rounded-lg shadow-lg bg-gradient-to-r from-violet-800 to-violet-500 flex flex-col items-center justify-center gap-2'>
           <h3 className='text-white font-poppins text-2xl'>Total Sales </h3>

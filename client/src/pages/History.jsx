@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import NavBar from '../components/NavBar';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
+import JwtValidator from '../components/JwtValidator';
 
 const History = () => {
     const [purchasedItems,setPurchasedItems]=useState([])
@@ -30,8 +31,6 @@ const History = () => {
             throw new Error(response.statusText);
             }
             const data=await response.json();
-            console.log(data);
-            
             setPurchasedItems(data)
             
         } catch (error) {
@@ -48,6 +47,12 @@ const History = () => {
             getPurchasedItems();
         }
     },[searchValue])
+    useEffect(()=>{
+        if(JwtValidator(localStorage.getItem("Token"))){
+        localStorage.clear();
+        window.location.href='/auth/login';
+        }
+    },[])
   return (
     <div className='w-screen h-screen bg-slate-900 relative overflow-hidden flex flex-col items-center justify-between'>
       <NavBar/>

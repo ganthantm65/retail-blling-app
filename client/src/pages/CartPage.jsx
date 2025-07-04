@@ -1,7 +1,9 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import NavBar from '../components/NavBar'
 import CartItem from '../components/CartItem'
 import MessageBox from '../components/MessageBox';
+import Invoice from '../components/Invoice';
+import JwtValidator from '../components/JwtValidator';
 
 function CartPage() {
   const [cartItems, setCartItems] = useState(() => {
@@ -13,13 +15,27 @@ function CartPage() {
   const [showMessage,setShowMessage]=useState(false);
   const [message,setMessage]=useState()
   const [color,setColor]=useState()
+  const [visible,setVisible]=useState(false)
+
+  const updateVisible=()=>{
+    setVisible(!visible)
+  }
+
+   useEffect(()=>{
+    if(JwtValidator(localStorage.getItem("Token"))){
+      localStorage.clear();
+      window.location.href='/auth/login';
+    }
+  },[])
+
   const updateName=(e)=>{
     setName(e.target.value);
   }
 
   const updatePhone=(e)=>{
-    if(e.target.value.length==10){
-      setPhone(e.target.value);
+    const value = e.target.value;
+    if (/^\d{0,10}$/.test(value)) {
+      setPhone(value);
     }
   }
 
@@ -100,6 +116,11 @@ function CartPage() {
           <MessageBox message={message} color={color}/>
         ):null
       }
+      {
+          visible ? (
+            <Invoice cartItems={cartItems} total={total} tax={taxRate} visible={visible} updateVisible={updateName}/>
+          ):null
+        }
       <NavBar/>
       <div className='w-full h-180 flex flex-row items-center justify-center gap-10'>
         <div className='w-300 h-full flex flex-col items-start justify-between bg-slate-800 rounded-lg shadow-lg p-10 gap-3'>
@@ -133,8 +154,11 @@ function CartPage() {
           <button 
           onClick={()=>createBill(cartItems,name,phone,"Cash")}
           className='w-100 h-10 bg-slate-800 rounded-lg shadow-lg pb-2 text-white cursor-pointer'>Pay Cash</button>
-          <button className='w-100 h-10 bg-slate-800 rounded-lg shadow-lg pb-2 text-white cursor-pointer'>Generate Invoice</button>
+          <button
+          onClick={updateVisible}
+          className='w-100 h-10 bg-slate-800 rounded-lg shadow-lg pb-2 text-white cursor-pointer'>Generate Invoice</button>
         </div>
+        
       </div>
     </div>
   )
